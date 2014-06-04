@@ -1,0 +1,22 @@
+options{
+    STATIC = false;
+}
+PARSER_BEGIN(Calculator)
+public class Calculator{
+    public static void main(String[] args) throws ParseException, TokenMgrError{//作者这里没有加public,这会在某些情况下产生错误（译注）
+            Calculator parser = new Calculator(System.in);
+            parser.start();
+    }
+}
+PARSER_END(Calculator)
+
+SKIP:{" "}
+SKIP:{"\n"|"\r"|"\r\n"}
+TOKEN:{< PLUS : "+">}
+TOKEN:{< NUMBER : (["0"-"9"])+ >}
+
+void start(): //马勒戈壁，BS不按标准写代码的（神秘的译者再吐槽）
+{}
+{
+    <NUMBER>(<PLUS><NUMBER>)*<EOF>
+}
