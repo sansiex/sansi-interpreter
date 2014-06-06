@@ -1,0 +1,101 @@
+options{
+    STATIC = false;
+}
+PARSER_BEGIN(Calculator)
+public class Calculator{
+    public static void main(String[] args) throws ParseException, TokenMgrError{//作者这里没有加public,这会在某些情况下产生错误（译注）
+            Calculator parser = new Calculator(System.in);
+            SimpleNode root=parser.statement();
+    }
+}
+PARSER_END(Calculator)
+
+SKIP:{" "}
+TOKEN:{< EOL: "\n"|"\r"|"\r\n">}
+TOKEN:{
+    < PLUS : "+">
+|    < MINUS : "-">
+|    < TIMES : "*">
+|    < DIVIDE : "/">
+|    < LPAREN : "(">
+|    < RPAREN : ")">
+}
+TOKEN:{< NUMBER : (["0"-"9"])+ >}
+
+SimpleNode procedure():
+{}
+{
+    (statement())+<EOF>
+    {return jjtThis;}
+}
+
+SimpleNode statement():
+{}
+{
+    expression()<EOL>
+    {return jjtThis;}
+}
+
+int expression():
+{
+    int value;
+    int tmp;
+}
+{
+    value=term()
+    (
+        (
+            <PLUS>
+            tmp=term()
+            {value+=tmp;}
+        )
+        |
+        (
+            <MINUS>
+            tmp=term()
+            {value-=tmp;}
+        )
+    )*
+    {return value;}
+}
+
+int term():
+{
+    int value;
+    int tmp;
+}
+{
+    value=factor()
+    (
+        (
+            <TIMES>
+            tmp=factor()
+            {value*=tmp;}
+        )
+        |
+        (
+            <DIVIDE>
+            tmp=factor()
+            {value/=tmp;}
+        )
+    )*
+    {return value;}
+}
+
+int factor():
+{
+    int value;
+    Token token;
+}
+{
+    token=<NUMBER>
+    {
+    value=Integer.parseInt(token.image);
+    return value;
+    }
+    |
+    <LPAREN>
+    value=expression()
+    <RPAREN>
+    {return value;}
+}
