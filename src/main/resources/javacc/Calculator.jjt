@@ -1,11 +1,16 @@
 options{
     STATIC = false;
+    MULTI = true;
+    NODE_PREFIX = "";
 }
 PARSER_BEGIN(Calculator)
 public class Calculator{
     public static void main(String[] args) throws ParseException, TokenMgrError{//作者这里没有加public,这会在某些情况下产生错误（译注）
             Calculator parser = new Calculator(System.in);
             SimpleNode root=parser.statement();
+        ExpressionNode en=(ExpressionNode)root.jjtGetChild(0);
+        System.out.println(en.getValue());
+
     }
 }
 PARSER_END(Calculator)
@@ -22,80 +27,37 @@ TOKEN:{
 }
 TOKEN:{< NUMBER : (["0"-"9"])+ >}
 
-SimpleNode procedure():
-{}
-{
+SimpleNode procedure() #ProcedureNode:{}{
     (statement())+<EOF>
     {return jjtThis;}
 }
 
-SimpleNode statement():
-{}
-{
+SimpleNode statement() #StatementNode:{}{
     expression()<EOL>
     {return jjtThis;}
 }
 
-int expression():
-{
-    int value;
-    int tmp;
-}
-{
-    value=term()
+void expression() #ExpressionNode:{}{
+    term()
     (
-        (
-            <PLUS>
-            tmp=term()
-            {value+=tmp;}
-        )
+        (<PLUS>term() #AddNode(2))
         |
-        (
-            <MINUS>
-            tmp=term()
-            {value-=tmp;}
-        )
+        (<MINUS>term() #MinusNode(2))
     )*
-    {return value;}
 }
 
-int term():
-{
-    int value;
-    int tmp;
-}
-{
-    value=factor()
+void term() #TermNode:{}{
+    factor()
     (
-        (
-            <TIMES>
-            tmp=factor()
-            {value*=tmp;}
-        )
+        (<TIMES>factor() #TimesNode(2))
         |
-        (
-            <DIVIDE>
-            tmp=factor()
-            {value/=tmp;}
-        )
+        (<DIVIDE>factor() #DivideNode(2))
     )*
-    {return value;}
 }
 
-int factor():
-{
-    int value;
+void factor() #FactorNode:{
     Token token;
-}
-{
-    token=<NUMBER>
-    {
-    value=Integer.parseInt(token.image);
-    return value;
-    }
-    |
-    <LPAREN>
-    value=expression()
-    <RPAREN>
-    {return value;}
+}{
+    (token=<NUMBER>{jjtThis.setText(token.image);})
+    |(<LPAREN>expression()<RPAREN>)
 }

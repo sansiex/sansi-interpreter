@@ -1,8 +1,5 @@
 package com.dianping.sansi.interpreter.controller;
 
-import com.dianping.sansi.interpreter.interpreter.calculator.Calculator;
-import com.dianping.sansi.interpreter.interpreter.calculator.ParseException;
-
 import java.io.Console;
 
 /**
@@ -13,6 +10,7 @@ public class ConsoleInterface {
         Console csl=System.console();
         if(csl==null){
             throw new IllegalStateException("Console is not available.");
+
         }
 //        while(true){
 //            System.out.println("Please input statement:");
