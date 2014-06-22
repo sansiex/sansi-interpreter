@@ -37,6 +37,8 @@ SimpleNode statement() #StatementNode:{}{
     {return jjtThis;}
 }
 
+//Calculator
+
 void expression() #ExpressionNode:{}{
     term()
     (

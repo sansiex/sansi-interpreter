@@ -1,6 +1,6 @@
-package com.dianping.sansi.interpreter.interpreter.calculator.node;
+package com.dianping.sansi.interpreter.interpreter.script.node;
 
-import com.dianping.sansi.interpreter.interpreter.calculator.Calculator;
+import com.dianping.sansi.interpreter.interpreter.script.SansiScript;
 
 /**
  * Created by lenovo on 2014/6/14.
@@ -12,7 +12,7 @@ public abstract class OperatorNode extends ValueNode{
 
 
 
-    public OperatorNode(Calculator p, int i) {
+    public OperatorNode(SansiScript p, int i) {
         super(p, i);
     }
 

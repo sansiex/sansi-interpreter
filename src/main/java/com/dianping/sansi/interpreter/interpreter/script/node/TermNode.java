@@ -1,6 +1,7 @@
-package com.dianping.sansi.interpreter.interpreter.calculator.node;
+package com.dianping.sansi.interpreter.interpreter.script.node;
 
 import com.dianping.sansi.interpreter.interpreter.calculator.Calculator;
+import com.dianping.sansi.interpreter.interpreter.script.SansiScript;
 
 /**
  * Created by lenovo on 2014/6/14.
@@ -11,7 +12,7 @@ public class TermNode extends ValueNode {
         super(i);
     }
 
-    public TermNode(Calculator p, int i) {
+    public TermNode(SansiScript p, int i) {
         super(p, i);
     }
 
