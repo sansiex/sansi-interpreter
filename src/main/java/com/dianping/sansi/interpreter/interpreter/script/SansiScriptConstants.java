@@ -30,10 +30,6 @@ public interface SansiScriptConstants {
   int IDENTIFIER = 11;
   /** RegularExpression Id. */
   int ARGUMENT = 12;
-  /** RegularExpression Id. */
-  int LETTER = 13;
-  /** RegularExpression Id. */
-  int DIGIT = 14;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -53,8 +49,6 @@ public interface SansiScriptConstants {
     "\"|\"",
     "<IDENTIFIER>",
     "<ARGUMENT>",
-    "<LETTER>",
-    "<DIGIT>",
   };
 
 }

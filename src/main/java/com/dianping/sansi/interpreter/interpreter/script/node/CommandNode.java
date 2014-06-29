@@ -37,7 +37,11 @@ public class CommandNode extends SimpleNode {
     }
 
     public String[] toArray(){
-        return (String[]) cmd.toArray();
+        String[] ret=new String[cmd.size()];
+        for (int i = 0; i < cmd.size(); i++) {
+            ret[i]=cmd.get(i);
+        }
+        return ret;
     }
 }
 /* JavaCC - OriginalChecksum=9879f1b869a250e11a1738e9769cbad2 (do not edit this line) */

@@ -5,19 +5,28 @@ options{
 }
 PARSER_BEGIN(SansiScript)
 import com.dianping.sansi.interpreter.interpreter.script.node.*;
+import java.io.StringReader;
 
 public class SansiScript{
     public static void main(String[] args) throws ParseException, TokenMgrError{
-                SansiScript parser = new SansiScript(System.in);
-                SimpleNode root=parser.statement();
-                SimpleNode n= (SimpleNode) root.jjtGetChild(0);
-                root.dump("");
-                if(n instanceof ExpressionNode){
-                    System.out.println(((ExpressionNode) n).getValue());
-                }
-                if (n instanceof CommandNode) {
-                    System.out.println(((CommandNode) n).getCommand());
-                }
+//        SansiScript parser = new SansiScript(System.in);
+//        SimpleNode root=parser.statement();
+//        SimpleNode n= (SimpleNode) root.jjtGetChild(0);
+//        root.dump("");
+//        if(n instanceof ExpressionNode){
+//            System.out.println(((ExpressionNode) n).getValue());
+//        }
+//        if (n instanceof CommandNode) {
+//            System.out.println(((CommandNode) n).getCommand());
+//        }
+        test("cat e:\\data\\test.txt | grep -i a | grep -i b\n");
+    }
+
+    protected static void test(String input) throws ParseException {
+        StringReader sr=new StringReader(input);
+        SansiScript parser = new SansiScript(sr);
+        SimpleNode root=parser.statement();
+        root.dump("");
     }
 }
 PARSER_END(SansiScript)
@@ -35,10 +44,8 @@ TOKEN:{
 TOKEN:{< NUMBER : (["0"-"9"])+ >}
 TOKEN:{< PIPE : "|" >}
 TOKEN:{
-    < IDENTIFIER : (<LETTER>|"_")(<LETTER>|<DIGIT>|"_")* >
-|   < ARGUMENT : (<LETTER>|<DIGIT>|["-","_",".","=",":","\\"])+ >
-|   < #LETTER : ["a"-"z","A"-"Z"] >
-|   < #DIGIT : ["0"-"9"] >
+    < IDENTIFIER : ["a"-"z","A"-"Z","_"](["a"-"z","A"-"Z","0"-"9","_"])* >
+|   < ARGUMENT : (["a"-"z","A"-"Z","0"-"9","-","_",".","=",":","\\"])+ >
 }
 
 ProcedureNode procedure() #ProcedureNode:{}{

@@ -16,8 +16,10 @@ import java.util.List;
  */
 public class ScriptInterpretor {
     public static List<Node> execScript(String script) throws ParseException {
-        SansiScript parser=new SansiScript(new StringReader(script));
+        StringReader sr=new StringReader(script);
+        SansiScript parser=new SansiScript(sr);
         ProcedureNode pn= (ProcedureNode) parser.procedure();
+        sr.close();
         ArrayList<Node> list=new ArrayList<>(pn.jjtGetNumChildren());
         for (int i = 0; i < pn.jjtGetNumChildren(); i++) {
             list.add(pn.jjtGetChild(i));
